@@ -240,7 +240,12 @@ export function processImage(
   downCanvas.width = dstW;
   downCanvas.height = dstH;
   const downCtx = downCanvas.getContext("2d")!;
-  const imageData = new ImageData(downPixels, dstW, dstH);
+  // Copy into a Uint8ClampedArray backed by a plain ArrayBuffer so the
+  // ImageData constructor receives the exact type it requires (TypeScript
+  // strict mode rejects Uint8ClampedArray<ArrayBufferLike> here).
+  const pixelsBuf = new Uint8ClampedArray(new ArrayBuffer(downPixels.length));
+  pixelsBuf.set(downPixels);
+  const imageData = new ImageData(pixelsBuf, dstW, dstH);
 
   // --- Step 4: Quantize pixels ---
   quantizeImageData(imageData.data, dstW, dstH, palette, dithering);
