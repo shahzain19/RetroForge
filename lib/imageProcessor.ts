@@ -1,12 +1,17 @@
 import type { Palette } from "./palettes";
 
 export type DownscaleMethod = "nearest" | "box";
+export type DitheringMethod = "none" | "floyd-steinberg" | "bayer-4x4" | "bayer-8x8";
+export type ColorMatchMethod = "rgb" | "luminance";
 
 export interface ProcessOptions {
   scale: number; // e.g. 0.5 = half, 0.25 = quarter
   palette: Palette;
-  dithering: boolean;
+  dithering: DitheringMethod;
   downscaleMethod: DownscaleMethod;
+  colorMatchMethod?: ColorMatchMethod;
+  brightness?: number; // -100 to 100
+  contrast?: number;   // -100 to 100
 }
 
 /**
@@ -108,6 +113,7 @@ function nearestColor(
   g: number,
   b: number,
   colors: [number, number, number][],
+  method: ColorMatchMethod = "rgb",
 ): [number, number, number] {
   let best = colors[0];
   let bestDist = Infinity;
@@ -116,7 +122,14 @@ function nearestColor(
     const dr = r - c[0];
     const dg = g - c[1];
     const db = b - c[2];
-    const dist = dr * dr + dg * dg + db * db;
+    
+    let dist = 0;
+    if (method === "luminance") {
+      dist = 2 * dr * dr + 4 * dg * dg + 3 * db * db;
+    } else {
+      dist = dr * dr + dg * dg + db * db;
+    }
+
     if (dist < bestDist) {
       bestDist = dist;
       best = c;
@@ -133,37 +146,83 @@ function clamp(v: number): number {
   return Math.max(0, Math.min(255, Math.round(v)));
 }
 
+const BAYER_4X4 = [
+  0, 8, 2, 10,
+  12, 4, 14, 6,
+  3, 11, 1, 9,
+  15, 7, 13, 5
+];
+
+const BAYER_8X8 = [
+  0, 32, 8, 40, 2, 34, 10, 42,
+  48, 16, 56, 24, 50, 18, 58, 26,
+  12, 44, 4, 36, 14, 46, 6, 38,
+  60, 28, 52, 20, 62, 30, 54, 22,
+  3, 35, 11, 43, 1, 33, 9, 41,
+  51, 19, 59, 27, 49, 17, 57, 25,
+  15, 47, 7, 39, 13, 45, 5, 37,
+  63, 31, 55, 23, 61, 29, 53, 21
+];
+
 /**
  * Process an ImageData in-place:
- * 1. Quantize each pixel to the nearest palette color.
- * 2. Optionally apply Floyd-Steinberg dithering.
+ * 1. Apply brightness and contrast.
+ * 2. Quantize each pixel to the nearest palette color.
+ * 3. Optionally apply dithering (Floyd-Steinberg or Bayer).
  */
 function quantizeImageData(
   data: Uint8ClampedArray,
   width: number,
   height: number,
   palette: Palette,
-  dithering: boolean,
+  dithering: DitheringMethod,
+  colorMatchMethod: ColorMatchMethod = "rgb",
+  brightness: number = 0,
+  contrast: number = 0,
 ): void {
   // Work on a float buffer so dithering errors accumulate correctly
   const buf = new Float32Array(width * height * 4);
-  for (let i = 0; i < data.length; i++) {
-    buf[i] = data[i];
+  
+  // Pre-calculate contrast factor
+  const c_val = Math.max(-255, Math.min(255, contrast * 2.55));
+  const factor = (259 * (c_val + 255)) / (255 * (259 - c_val));
+  const b_val = brightness * 2.55;
+
+  for (let i = 0; i < data.length; i += 4) {
+    buf[i] = factor * (data[i] - 128) + 128 + b_val;
+    buf[i + 1] = factor * (data[i + 1] - 128) + 128 + b_val;
+    buf[i + 2] = factor * (data[i + 2] - 128) + 128 + b_val;
+    buf[i + 3] = data[i + 3];
   }
+
+  const bayerSpread = 32;
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const idx = (y * width + x) * 4;
 
-      const oldR = buf[idx];
-      const oldG = buf[idx + 1];
-      const oldB = buf[idx + 2];
+      let oldR = buf[idx];
+      let oldG = buf[idx + 1];
+      let oldB = buf[idx + 2];
+
+      if (dithering === "bayer-4x4") {
+        const threshold = (BAYER_4X4[(y % 4) * 4 + (x % 4)] / 16) - 0.5;
+        oldR += threshold * bayerSpread;
+        oldG += threshold * bayerSpread;
+        oldB += threshold * bayerSpread;
+      } else if (dithering === "bayer-8x8") {
+        const threshold = (BAYER_8X8[(y % 8) * 8 + (x % 8)] / 64) - 0.5;
+        oldR += threshold * bayerSpread;
+        oldG += threshold * bayerSpread;
+        oldB += threshold * bayerSpread;
+      }
 
       const [newR, newG, newB] = nearestColor(
         clamp(oldR),
         clamp(oldG),
         clamp(oldB),
         palette.colors,
+        colorMatchMethod
       );
 
       buf[idx] = newR;
@@ -171,7 +230,7 @@ function quantizeImageData(
       buf[idx + 2] = newB;
       // alpha stays unchanged
 
-      if (dithering) {
+      if (dithering === "floyd-steinberg") {
         const errR = oldR - newR;
         const errG = oldG - newG;
         const errB = oldB - newB;
@@ -179,14 +238,14 @@ function quantizeImageData(
         // Floyd-Steinberg kernel:
         //         X   7/16
         //   3/16  5/16  1/16
-        const distribute = (dx: number, dy: number, factor: number) => {
+        const distribute = (dx: number, dy: number, errFactor: number) => {
           const nx = x + dx;
           const ny = y + dy;
           if (nx < 0 || nx >= width || ny < 0 || ny >= height) return;
           const ni = (ny * width + nx) * 4;
-          buf[ni] += errR * factor;
-          buf[ni + 1] += errG * factor;
-          buf[ni + 2] += errB * factor;
+          buf[ni] += errR * errFactor;
+          buf[ni + 1] += errG * errFactor;
+          buf[ni + 2] += errB * errFactor;
         };
 
         distribute(1, 0, 7 / 16);
@@ -211,7 +270,7 @@ export function processImage(
   source: HTMLImageElement | HTMLCanvasElement,
   options: ProcessOptions,
 ): HTMLCanvasElement {
-  const { scale, palette, dithering, downscaleMethod } = options;
+  const { scale, palette, dithering, downscaleMethod, colorMatchMethod, brightness, contrast } = options;
 
   const srcW =
     source instanceof HTMLImageElement ? source.naturalWidth : source.width;
@@ -248,7 +307,7 @@ export function processImage(
   const imageData = new ImageData(pixelsBuf, dstW, dstH);
 
   // --- Step 4: Quantize pixels ---
-  quantizeImageData(imageData.data, dstW, dstH, palette, dithering);
+  quantizeImageData(imageData.data, dstW, dstH, palette, dithering, colorMatchMethod, brightness, contrast);
   downCtx.putImageData(imageData, 0, 0);
 
   return downCanvas;

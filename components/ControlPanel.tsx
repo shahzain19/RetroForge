@@ -1,14 +1,17 @@
 "use client";
 
 import { PALETTES } from "@/lib/palettes";
-import { type DownscaleMethod } from "@/lib/imageProcessor";
+import { type DownscaleMethod, type DitheringMethod, type ColorMatchMethod } from "@/lib/imageProcessor";
 import { cn } from "@/lib/utils";
 
 export interface Settings {
   paletteId: string;
   scale: number;
-  dithering: boolean;
+  dithering: DitheringMethod;
   downscaleMethod: DownscaleMethod;
+  colorMatchMethod: ColorMatchMethod;
+  brightness: number;
+  contrast: number;
 }
 
 interface ControlPanelProps {
@@ -112,17 +115,84 @@ export default function ControlPanel({
 
       <Divider />
 
+      {/* Adjustments */}
+      <Section label="Adjustments">
+        <div className="flex flex-col gap-3 px-1">
+          <div className="flex flex-col gap-1.5">
+            <div className="flex justify-between text-xs text-zinc-400">
+              <span>Brightness</span>
+              <span className="font-mono">{settings.brightness}</span>
+            </div>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value={settings.brightness}
+              onChange={(e) => set("brightness", parseInt(e.target.value, 10))}
+              className="accent-violet-500"
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <div className="flex justify-between text-xs text-zinc-400">
+              <span>Contrast</span>
+              <span className="font-mono">{settings.contrast}</span>
+            </div>
+            <input
+              type="range"
+              min="-100"
+              max="100"
+              value={settings.contrast}
+              onChange={(e) => set("contrast", parseInt(e.target.value, 10))}
+              className="accent-violet-500"
+            />
+          </div>
+        </div>
+      </Section>
+
+      <Divider />
+
+      {/* Color Matching */}
+      <Section label="Color Match">
+        <div className="grid grid-cols-2 gap-1.5">
+          {(["rgb", "luminance"] as ColorMatchMethod[]).map((method) => (
+            <button
+              key={method}
+              type="button"
+              onClick={() => set("colorMatchMethod", method)}
+              className={cn(
+                "rounded px-3 py-2 text-xs font-mono transition-colors capitalize",
+                settings.colorMatchMethod === method
+                  ? "bg-violet-600 text-white"
+                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200",
+              )}
+            >
+              {method}
+            </button>
+          ))}
+        </div>
+      </Section>
+
+      <Divider />
+
       {/* Dithering */}
       <Section label="Dithering">
-        <label className="flex cursor-pointer items-center justify-between rounded bg-zinc-800 px-3 py-2.5">
-          <span className="text-xs font-mono text-zinc-300">
-            Floyd-Steinberg
-          </span>
-          <Toggle
-            checked={settings.dithering}
-            onChange={(v) => set("dithering", v)}
-          />
-        </label>
+        <div className="flex flex-col gap-1.5">
+          {(["none", "floyd-steinberg", "bayer-4x4", "bayer-8x8"] as DitheringMethod[]).map((method) => (
+            <button
+              key={method}
+              type="button"
+              onClick={() => set("dithering", method)}
+              className={cn(
+                "rounded px-3 py-2 text-xs font-mono transition-colors text-left",
+                settings.dithering === method
+                  ? "bg-violet-600 text-white"
+                  : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200",
+              )}
+            >
+              {method === "none" ? "None" : method === "floyd-steinberg" ? "Floyd-Steinberg" : method === "bayer-4x4" ? "Bayer 4x4" : "Bayer 8x8"}
+            </button>
+          ))}
+        </div>
       </Section>
 
       <div className="mt-auto">

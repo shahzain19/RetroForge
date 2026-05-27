@@ -11,8 +11,11 @@ import { getPaletteById } from "@/lib/palettes";
 const DEFAULT_SETTINGS: Settings = {
   paletteId: "ps1",
   scale: 0.25,
-  dithering: false,
+  dithering: "none",
   downscaleMethod: "nearest",
+  colorMatchMethod: "rgb",
+  brightness: 0,
+  contrast: 0,
 };
 
 export default function RetroForge() {
@@ -54,6 +57,9 @@ export default function RetroForge() {
             palette,
             dithering: settings.dithering,
             downscaleMethod: settings.downscaleMethod,
+            colorMatchMethod: settings.colorMatchMethod,
+            brightness: settings.brightness,
+            contrast: settings.contrast,
           });
           setOutputCanvas(result);
         } finally {
