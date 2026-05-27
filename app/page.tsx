@@ -15,8 +15,8 @@ const FEATURES = [
   {
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-        <path d="M10 3v10M6 9l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M3 15h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M10 3v10M6 9l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M3 15h14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
     title: "Custom Downscaling",
@@ -25,11 +25,11 @@ const FEATURES = [
   {
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-        <circle cx="5" cy="5" r="2.5" fill="currentColor"/>
-        <circle cx="15" cy="5" r="2.5" fill="currentColor"/>
-        <circle cx="5" cy="15" r="2.5" fill="currentColor"/>
-        <circle cx="15" cy="15" r="2.5" fill="currentColor"/>
-        <circle cx="10" cy="10" r="2.5" fill="currentColor" opacity="0.4"/>
+        <circle cx="5" cy="5" r="2.5" fill="currentColor" />
+        <circle cx="15" cy="5" r="2.5" fill="currentColor" />
+        <circle cx="5" cy="15" r="2.5" fill="currentColor" />
+        <circle cx="15" cy="15" r="2.5" fill="currentColor" />
+        <circle cx="10" cy="10" r="2.5" fill="currentColor" opacity="0.4" />
       </svg>
     ),
     title: "Palette Matching",
@@ -38,14 +38,14 @@ const FEATURES = [
   {
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-        <rect x="2" y="2" width="4" height="4" fill="currentColor"/>
-        <rect x="8" y="2" width="4" height="4" fill="currentColor" opacity="0.6"/>
-        <rect x="14" y="2" width="4" height="4" fill="currentColor" opacity="0.3"/>
-        <rect x="5" y="8" width="4" height="4" fill="currentColor" opacity="0.8"/>
-        <rect x="11" y="8" width="4" height="4" fill="currentColor" opacity="0.4"/>
-        <rect x="2" y="14" width="4" height="4" fill="currentColor" opacity="0.5"/>
-        <rect x="8" y="14" width="4" height="4" fill="currentColor" opacity="0.9"/>
-        <rect x="14" y="14" width="4" height="4" fill="currentColor" opacity="0.2"/>
+        <rect x="2" y="2" width="4" height="4" fill="currentColor" />
+        <rect x="8" y="2" width="4" height="4" fill="currentColor" opacity="0.6" />
+        <rect x="14" y="2" width="4" height="4" fill="currentColor" opacity="0.3" />
+        <rect x="5" y="8" width="4" height="4" fill="currentColor" opacity="0.8" />
+        <rect x="11" y="8" width="4" height="4" fill="currentColor" opacity="0.4" />
+        <rect x="2" y="14" width="4" height="4" fill="currentColor" opacity="0.5" />
+        <rect x="8" y="14" width="4" height="4" fill="currentColor" opacity="0.9" />
+        <rect x="14" y="14" width="4" height="4" fill="currentColor" opacity="0.2" />
       </svg>
     ),
     title: "Floyd-Steinberg Dithering",
@@ -54,8 +54,8 @@ const FEATURES = [
   {
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-        <path d="M10 2a8 8 0 100 16A8 8 0 0010 2z" stroke="currentColor" strokeWidth="1.5"/>
-        <path d="M10 6v4l3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M10 2a8 8 0 100 16A8 8 0 0010 2z" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M10 6v4l3 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
     title: "Instant Processing",
@@ -64,8 +64,8 @@ const FEATURES = [
   {
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-        <path d="M4 14l4-4 3 3 5-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+        <path d="M4 14l4-4 3 3 5-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
       </svg>
     ),
     title: "Side-by-Side Preview",
@@ -74,9 +74,9 @@ const FEATURES = [
   {
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
-        <path d="M13 2H7a1 1 0 00-1 1v14a1 1 0 001 1h10a1 1 0 001-1V6l-5-4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
-        <path d="M13 2v4h4" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
-        <path d="M8 12h4M8 15h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        <path d="M13 2H7a1 1 0 00-1 1v14a1 1 0 001 1h10a1 1 0 001-1V6l-5-4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M13 2v4h4" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M8 12h4M8 15h2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
       </svg>
     ),
     title: "Export PNG",
@@ -138,7 +138,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <a
-              href="https://github.com"
+              href="https://github.com/shahzain19/RetroForge"
               className="hidden text-xs font-mono text-zinc-500 transition-colors hover:text-zinc-300 sm:block"
             >
               GitHub
@@ -168,11 +168,11 @@ export default function LandingPage() {
         {/* Radial glow */}
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-700/10 blur-[140px]"
+          className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-400/8 blur-[140px]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute left-1/4 top-1/3 h-[300px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-600/8 blur-[100px]"
+          className="pointer-events-none absolute left-1/4 top-1/3 h-[300px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-400/8 blur-[100px]"
         />
 
         <div className="relative z-10 flex flex-col items-center gap-7 text-center">
@@ -206,11 +206,11 @@ export default function LandingPage() {
               <span className="transition-transform group-hover:translate-x-0.5">→</span>
             </Link>
             <a
-              href="https://github.com"
+              href="https://github.com/shahzain19/RetroForge"
               className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-7 py-3 text-sm font-semibold font-mono text-zinc-300 transition-colors hover:border-zinc-500 hover:text-zinc-100"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
               </svg>
               View Source
             </a>
@@ -258,7 +258,7 @@ export default function LandingPage() {
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-zinc-700">
           <span className="text-[9px] font-mono uppercase tracking-[0.2em]">scroll</span>
           <svg width="12" height="16" viewBox="0 0 12 16" fill="none" aria-hidden>
-            <path d="M6 1v10M2 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M6 1v10M2 8l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
       </section>
